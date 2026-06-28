@@ -1,3 +1,16 @@
+# Ejecutables y compilados de Windows
 *.exe
-*.o
 *.obj
+
+# Archivos objeto y compilados de Linux/Mac
+*.o
+*.out
+
+# Carpetas de salida para tus ejecutables sin extensión (Recomendado)
+bin/
+build/
+
+# Archivos temporales y de editores (opcional)
+.vscode/
+*.swp
+*~
