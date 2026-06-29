@@ -11,6 +11,6 @@ The purpose of this project is to build a rock-solid foundation in low-level pro
 - [x] Chapter 04: Expressions
 - [x] Chapter 05: Selection Statements
 - [x] Chapter 06: Loops
-- [x] Chapter 07: Basic Types (In Progress)
+- [x] Chapter 07: Basic Types
 - [] Chapter 08: Arrays
 - [ ] Chapter 09: Functions
