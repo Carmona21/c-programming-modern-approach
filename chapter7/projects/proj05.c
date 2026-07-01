@@ -24,7 +24,7 @@ int main(){
 			case 'K': sum += 5; break;
 			case 'J': case 'X': sum += 8; break;
 			case 'Q': case 'Z': sum += 10; break;
-			defalt: sum += 0;
+			default: sum += 0;
 		}
 		ch = getchar();
 	}
