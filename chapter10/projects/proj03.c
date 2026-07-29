@@ -2,11 +2,9 @@
  * Book: C Programming: A Modern Approach (2nd Edition)
  * Chapter: 10
  * Projects: 3
- * Prompt: Modify Remove the num_in_rank, num_in_suit, and card_exists arrays from the poker.c
-    program of section 10.5. Have the program store the cards in a 5 x 2 array instead. Each row
-    of the string will represent a card. For example, if the array is named hand, then hand [0][0]
-    will stroe the rank of the first card and hand[0][1] will store the suit of the first card.
-*/
+ * Prompt: Remove the num_in_rank, num_in_suit, and card_exists arrays from the poker.c
+ * program of section 10.5. Have the program store the cards in a 5 x 2 array instead.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -18,35 +16,35 @@
 bool straight, flush, four, three;
 int pairs;
 
-void read_cards(int hand[]);
-void analyze_hand(int hand[]);
+void read_cards(int a, int b, char hand[a][b]);
+void analyze_hand(int a, int b, char hand[a][b]);
 void print_result(void);
 
 int main(){
-    int hand[5][2];
-    char check[5][2];
+    char hand[5][2];
+
     for(;;){
-        read_cards(int hand[][], int 5, int b);
-        analyze_hand(int hand[][], int 5, int b);
+        read_cards(5, 2, hand);
+        analyze_hand(5, 2, hand);
         print_result();
     }
 }
 
-void read_cards(int hand[][], char check[][], int a, int b){
+void read_cards(int a, int b, char hand[a][b]){
     char ch, rank_ch, suit_ch;
-    int rank, suit;
-    bool bad_card;
+    int rank, suit, i;
+    bool bad_card, duplicate;
     int cards_read = 0;
 
-    for(rank = 0; rank < a; rank++){
-        for(suit = 0; suit < b; suit++){
-            hand[rank][suit] = 0;
-            check[rank][suit] = false;
+    for(int r = 0; r < a; r++){
+        for(int s = 0; s < b; s++){
+            hand[r][s] = 0;
         }
     }
 
     while(cards_read < NUM_CARDS){
         bad_card = false;
+        duplicate = false;
 
         printf("Enter a card: ");
 
@@ -81,45 +79,83 @@ void read_cards(int hand[][], char check[][], int a, int b){
         while((ch = getchar()) != '\n')
             if(ch != ' ') bad_card = true;
 
-        if(bad_card)
+        if(bad_card){
             printf("Bad card; ignored.\n");
-        else if(check[rank][suit])
-            printf("Duplicate card; ignored.\n");
-        else{
-            hand[rank][suit]++;
-            check[rank][suit] = true;
-            cards_read++;
+        }
+        else {
+            for(i = 0; i < cards_read; i++){
+                if(hand[i][0] == rank && hand[i][1] == suit){
+                    printf("Duplicate card; ignored.\n");
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if(!duplicate){
+                hand[cards_read][0] = rank;
+                hand[cards_read][1] = suit;
+                cards_read++;
+            }
         }
     }
 }
 
-void analyze_hand(int hand[][], char check[][], int a, int b){
-    int num_consec = 0;
-    int rank, suit;
+void analyze_hand(int a, int b, char hand[a][b]){
+    int matches = 0;
+    int rank, j;
+    int temp_rank, temp_suit;
 
     straight = false;
-    flush = false;
+    flush = true;
     four = false;
     three = false;
     pairs = 0;
 
-    for(suit = 0; suit < NUM_SUITS; suit++)
-        if(num_in_suit[suit] == NUM_CARDS)
-            flush = true;
-    
-    rank = 0;
-    while(num_in_rank[rank] == 0) rank++;
-    for(;rank < NUM_RANKS && num_in_rank[rank] > 0; rank++)
-        num_consec++;
-    if(num_consec == NUM_CARDS){
-        straight = true;
-        return;
+    for(rank = 1; rank < NUM_CARDS; rank++){
+        if(hand[0][1] != hand[rank][1]){
+            flush = false;
+            break;
+        }
+    }
+        
+    for(rank = 0; rank < NUM_CARDS; rank++){
+        for (j = rank + 1; j < NUM_CARDS; j++){
+            if(hand[rank][0] == hand[j][0]){
+                matches++;
+            }
+        }
     }
 
-    for(rank = 0; rank < NUM_RANKS; rank++){
-        if(num_in_rank[rank] == 4) four = true;
-        if(num_in_rank[rank] == 3) three = true;
-        if(num_in_rank[rank] == 2) pairs++;
+    if (matches == 1) pairs = 1;
+    if (matches == 2) pairs = 2;
+    if (matches == 3) three = true;
+    if (matches == 4) { 
+        three = true; 
+        pairs = 1; 
+    } 
+    if (matches == 6) four = true;
+
+    for (int i = 0; i < NUM_CARDS - 1; i++) {
+        for (j = 0; j < NUM_CARDS - i - 1; j++) {
+            if (hand[j][0] > hand[j+1][0]) {
+                
+                temp_rank = hand[j][0];
+                hand[j][0] = hand[j+1][0];
+                hand[j+1][0] = temp_rank;
+                
+                temp_suit = hand[j][1];
+                hand[j][1] = hand[j+1][1];
+                hand[j+1][1] = temp_suit;
+            }
+        }
+    }
+
+    straight = true;
+    for (int i = 0; i < NUM_CARDS - 1; i++) {
+        if (hand[i+1][0] - hand[i][0] != 1) {
+            straight = false;
+            break;
+        }
     }
 }
 
@@ -127,8 +163,9 @@ void print_result(void){
     if(straight && flush)               printf("Straight flush");
     else if(four)                       printf("Four of a kind");
     else if(three && pairs == 1)        printf("Full house");
-    else if(flush)                      printf("Straight");
-    else if(three)                      printf("Three of a kinf");
+    else if(flush)                      printf("Flush");
+    else if(straight)                   printf("Straight");
+    else if(three)                      printf("Three of a kind");
     else if(pairs == 2)                 printf("Two pairs");
     else if(pairs == 1)                 printf("Pair");
     else                                printf("High card");
