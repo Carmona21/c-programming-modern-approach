@@ -14,7 +14,7 @@ The purpose of this project is to build a rock-solid foundation in low-level pro
 - [x] Chapter 07: Basic Types
 - [x] Chapter 08: Arrays
 - [x] Chapter 09: Functions
-- [ ] Chapter 10: Program Organization
-- [ ] Chapter 11: Pointers
+- [x] Chapter 10: Program Organization
+- [x] Chapter 11: Pointers
 - [ ] Chapter 12: Pointers and Arrays
 - [ ] Chapter 13: String
