@@ -1,0 +1,43 @@
+/*
+	* Book: C Programming: A Modern Approach (2nd Edition)
+	* Chapter: 12
+	* Exercises: 10
+	* Prompt: Assume that the following array contains a week's worth of hourly temperature readings, with each row containing the readings for one day.
+			int temperatures[7][24];
+		Write a statement that uses the search function (exercise 7) to search the entire temperatures array for the value 32.
+*/
+#include <stdio.h>
+#include <stdbool.h>
+
+#define ROW 7
+#define COL 24
+
+bool search(int *a, int n, int hey);
+
+
+int main(){
+	int temperature[ROW][COL] = {
+				{18,17,16,15,15,16,19,22,25,28,30,31,32,32,31,30,28,26,24,22,21},
+				{17,17,16,15,14,15,18,21,25,28,30,31,32,32,31,30,28,25,23,22,20},
+				{17,16,15,14,13,14,17,20,24,27,30,31,32,32,31,29,27,25,23,21,19},
+				{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24},
+				{25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45},
+				{46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66},
+				{67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,85,86}
+				};
+
+	printf("%s \n",(search(temperature[0],ROW*COL,0)) ? ("True"):("False"));
+
+	putchar('\n');
+	return 0;
+}
+
+bool search(int *a, int n, int key){
+	int *p;
+
+	for(p = a; p < a + n; p++)
+		if(*p == key)
+			return true;
+
+	return false;
+}
