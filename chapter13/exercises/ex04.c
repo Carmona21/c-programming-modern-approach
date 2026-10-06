@@ -1,7 +1,7 @@
  /*
  * Book: C Programming: A Modern Approach (2nd Edition)
  * Chapter: 13
- * Exercises: 3
+ * Exercises: 4
  * Prompt: Modify the read_line function in each of the followin ways:
     a) have it skip white space before beginning to store input characters.
 */ 
